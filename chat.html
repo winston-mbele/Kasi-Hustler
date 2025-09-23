@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Messages - Kasi Hustle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="chat-body">
+     <nav class="navbar">
+        <div class="nav-container">
+             <div class="nav-logo"><h2><a href="index.html">Kasi Hustle</a></h2></div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="profile.html" class="nav-link btn-auth">My Profile</a>
+                <button class="btn-theme theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="chat-container">
+        <div class="conversations-list">
+            <div class="chat-header">
+                <h3>Inbox</h3>
+            </div>
+            <div class="chat-contact active">
+                <img src="https://images.pexels.com/photos/8454556/pexels-photo-8454556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Avatar">
+                <div class="contact-details">
+                    <div class="contact-name">Thabo Mthembu</div>
+                    <div class="last-message">Sounds good, I can be there at 2 PM.</div>
+                </div>
+                <div class="message-time">15m ago</div>
+            </div>
+             <div class="chat-contact">
+                <img src="https://images.pexels.com/photos/5691535/pexels-photo-5691535.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Avatar">
+                <div class="contact-details">
+                    <div class="contact-name">Jabu Painting Co.</div>
+                    <div class="last-message">Okay, quote received. Thank you!</div>
+                </div>
+                <div class="message-time">1h ago</div>
+            </div>
+        </div>
+
+        <div class="chat-window">
+            <div class="chat-header">
+                <h3>Conversation with Thabo Mthembu</h3>
+            </div>
+            <div class="message-area">
+                <div class="message received">
+                    <p>Hi, I saw your profile on Kasi Hustle. I have a leaking pipe under my kitchen sink. Are you available to take a look?</p>
+                    <span>Yesterday, 4:30 PM</span>
+                </div>
+                <div class="message sent">
+                    <p>Hi there! Yes, I can definitely help with that. Can you send me a picture of the leak?</p>
+                     <span>Yesterday, 4:32 PM</span>
+                </div>
+                 <div class="message received">
+                    <p>Sure, here it is. [Image attached]</p>
+                     <span>Yesterday, 4:35 PM</span>
+                </div>
+                 <div class="message sent">
+                    <p>Thanks. Looks like a straightforward fix. I can come by tomorrow. My call-out fee is R350 which includes the first hour of labor.</p>
+                     <span>Yesterday, 4:40 PM</span>
+                </div>
+                 <div class="message received">
+                    <p>Sounds good, I can be there at 2 PM.</p>
+                     <span>15m ago</span>
+                </div>
+            </div>
+            <div class="message-input-area">
+                <input type="text" placeholder="Type your message...">
+                <button><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
