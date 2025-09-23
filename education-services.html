@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Maintenance Services - Kasi Hustle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2><a href="index.html">Kasi Hustle</a></h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html#home" class="nav-link">Home</a>
+                <a href="index.html#services" class="nav-link">Services</a>
+                <a href="auth.html" class="nav-link btn-auth">Sign Up / Login</a>
+                <button class="btn-theme theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+            </div>
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="services-page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Home Maintenance</h2>
+                <p>Find trusted plumbers, electricians, painters, and handymen in your area.</p>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="location-filter"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" id="location-filter" placeholder="e.g., Soweto">
+                </div>
+                <div class="filter-group">
+                    <label for="rating-filter"><i class="fas fa-star"></i> Min. Rating</label>
+                    <select id="rating-filter">
+                        <option value="1">1 Star+</option>
+                        <option value="2">2 Stars+</option>
+                        <option value="3">3 Stars+</option>
+                        <option value="4" selected>4 Stars+</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                 <div class="filter-group">
+                    <label for="price-filter"><i class="fas fa-dollar-sign"></i> Price Range</label>
+                    <select id="price-filter">
+                        <option value="all">Any</option>
+                        <option value="low">R - RR</option>
+                        <option value="mid">RR - RRR</option>
+                        <option value="high">RRR+</option>
+                    </select>
+                </div>
+                <button class="btn-primary">Apply Filters</button>
+            </div>
+
+            <div class="providers-grid">
+                <div class="provider-card">
+                    <div class="provider-image"><img class="provider-photo" src="https://images.pexels.com/photos/8454556/pexels-photo-8454556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" loading="lazy" alt="Profile photo"></div>
+                    <div class="provider-info">
+                        <h3>Thabo Mthembu</h3><p class="provider-service">Plumbing</p>
+                        <div class="provider-rating">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                        </div>
+                        <div class="provider-actions">
+                            <a href="chat.html" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
+                            <a href="provider-profile.html" class="btn-profile">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="provider-card">
+                    <div class="provider-image"><img class="provider-photo" src="https://images.pexels.com/photos/5691535/pexels-photo-5691535.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" loading="lazy" alt="Profile photo"></div>
+                    <div class="provider-info">
+                        <h3>Jabu Painting Co.</h3><p class="provider-service">Painting & Decor</p>
+                        <div class="provider-rating">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        </div>
+                         <div class="provider-actions">
+                            <a href="chat.html" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
+                            <a href="provider-profile.html" class="btn-profile">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+                 </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container"><div class="footer-bottom"><p>&copy; 2025 Kasi Hustle. All rights reserved.</p></div></div>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
