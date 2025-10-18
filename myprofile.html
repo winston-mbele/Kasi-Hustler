@@ -13,11 +13,15 @@
 
         <div class="profile-header">
             <div class="profile-avatar">
-                <img src="lethabo copy.jpg" alt="User Avatar">
+                <img src="default-profile-picture.png" alt="User Avatar" id="profileImage">
+                <label for="imageUpload" class="edit-avatar-btn">
+                    <i class="fas fa-pencil-alt"></i>
+                </label>
+                <input type="file" id="imageUpload" accept="image/*" style="display:none;">
             </div>
             <div class="profile-info">
-                <h1>Justin Mthombeni</h1>
-                <p class="text-light">Creative Web Developer & UI/UX Enthusiast</p>
+                <h1 id="user-name">Justin Mthombeni</h1>
+                <p id="user-headline" class="text-light">Creative Web Developer & UI/UX Enthusiast</p>
             </div>
         </div>
 
@@ -81,6 +85,32 @@
     </div>
 
     <style>
+        /* Added styles for the profile avatar and edit button */
+        .profile-avatar {
+            position: relative;
+            width: fit-content; /* Ensures the container wraps the image */
+        }
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background-color: var(--primary-color, #007bff); /* Fallback color */
+            color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: 2px solid var(--background-color, #fff); /* Fallback color */
+            font-size: 0.9rem;
+        }
+        .edit-avatar-btn:hover {
+            background-color: var(--secondary-color, #0056b3); /* Fallback color */
+        }
+
         .document-card {
             background-color: var(--background-color);
             border: 1px solid var(--border-color);
@@ -146,5 +176,21 @@
             border: none;
         }
     </style>
+
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const profileImage = document.getElementById('profileImage');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImage.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    <script type="module" src="firebase-config.js"></script>
 </body>
 </html>
