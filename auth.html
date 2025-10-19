@@ -16,6 +16,15 @@
             <button id="show-signup">Sign Up</button>
         </div>
 
+        <div class="social-auth">
+            <button id="google-signin-btn" class="btn-google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo">
+                Continue with Google
+            </button>
+        </div>
+
+        <div class="divider"><span>OR</span></div>
+
         <div id="login-form" class="auth-form">
             <h2>Welcome Back</h2>
             <form>
@@ -60,42 +69,107 @@
         </div>
     </div>
 
-    <script>
-        // Basic form switching logic
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const showLoginBtn = document.getElementById('show-login');
-        const showSignupBtn = document.getElementById('show-signup');
-        const switchToSignupLink = document.getElementById('switch-to-signup');
-        const switchToLoginLink = document.getElementById('switch-to-login');
+    <script type="module">
+    // Import what you need from the SDKs
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import { setDoc, doc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+    // Import auth and db from your config file
+    import { auth, db } from './firebase-config.js';
 
-        function showLogin() {
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-            showLoginBtn.classList.add('active');
-            showSignupBtn.classList.remove('active');
+    // --- Form Switching Logic (No changes here) ---
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const showLoginBtn = document.getElementById('show-login');
+    const showSignupBtn = document.getElementById('show-signup');
+    const switchToSignupLink = document.getElementById('switch-to-signup');
+    const switchToLoginLink = document.getElementById('switch-to-login');
+
+    function showLogin() {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        showLoginBtn.classList.add('active');
+        showSignupBtn.classList.remove('active');
+    }
+
+    function showSignup() {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        showLoginBtn.classList.remove('active');
+        showSignupBtn.classList.add('active');
+    }
+
+    showLoginBtn.addEventListener('click', showLogin);
+    switchToLoginLink.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+    showSignupBtn.addEventListener('click', showSignup);
+    switchToSignupLink.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+
+    // --- Google Sign-In Logic ---
+    const googleSignInBtn = document.getElementById('google-signin-btn');
+    googleSignInBtn.addEventListener('click', async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Save or update user data in Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                fullName: user.displayName,
+                email: user.email
+                // You can add more fields here, like photoURL: user.photoURL
+            }, { merge: true }); // merge:true prevents overwriting existing data
+
+            window.location.href = "myprofile.html"; // Redirect on success
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
+            alert(`Google Sign-In Error: ${error.message}`);
+        }
+    });
+
+    // --- Firebase Signup Logic ---
+    const signupFormElement = signupForm.querySelector('form');
+    signupFormElement.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
         }
 
-        function showSignup() {
-            loginForm.style.display = 'none';
-            signupForm.style.display = 'block';
-            showLoginBtn.classList.remove('active');
-            showSignupBtn.classList.add('active');
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                fullName: name,
+                email: email
+            });
+
+            window.location.href = "myprofile.html";
+        } catch (error) {
+            console.error("Error signing up:", error);
+            alert(error.message);
         }
+    });
 
-        showLoginBtn.addEventListener('click', showLogin);
-        switchToLoginLink.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
-        
-        showSignupBtn.addEventListener('click', showSignup);
-        switchToSignupLink.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+    // --- Firebase Login Logic ---
+    const loginFormElement = loginForm.querySelector('form');
+    loginFormElement.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
 
-         const loginFormElement = loginForm.querySelector('form');
-    loginFormElement.addEventListener('submit', (e) => {
-        e.preventDefault(); // stop default reload
-        window.location.href = "myprofile.html"; // redirect
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            window.location.href = "myprofile.html";
+        } catch (error) {
+            console.error("Error signing in:", error);
+            alert(error.message);
+        }
     });
     </script>
-
-    <script type="module" src="firebase-config.js"></script>
 </body>
 </html>

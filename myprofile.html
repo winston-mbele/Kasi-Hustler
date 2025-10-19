@@ -11,6 +11,10 @@
 
     <div class="container">
 
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
         <div class="profile-header">
             <div class="profile-avatar">
                 <img src="default-profile-picture.png" alt="User Avatar" id="profileImage">
@@ -177,20 +181,57 @@
         }
     </style>
 
-    <script>
-        document.getElementById('imageUpload').addEventListener('change', function(event) {
-            const profileImage = document.getElementById('profileImage');
-            const file = event.target.files[0];
+    <script type="module">
+    // Import what you need from the SDKs
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+    // Import auth and db from your config file
+    import { auth, db } from './firebase-config.js';
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profileImage.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
+    // --- Image Upload Logic (No changes here) ---
+    document.getElementById('imageUpload').addEventListener('change', function(event) {
+        const profileImage = document.getElementById('profileImage');
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImage.src = e.target.result;
             }
-        });
-    </script>
-    <script type="module" src="firebase-config.js"></script>
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // --- Firebase: Check Authentication State and Update Profile ---
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // User is signed in.
+            const uid = user.uid;
+
+            // Get the user's document from Firestore
+            const userDocRef = doc(db, "users", uid);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                
+                // Update the DOM with the user's information
+                document.getElementById('user-name').textContent = userData.fullName;
+                document.querySelector('.contact-details a[href^="mailto:"]').textContent = userData.email;
+                document.querySelector('.contact-details a[href^="mailto:"]').href = `mailto:${userData.email}`;
+                
+                // You can add more fields here if you store them in Firestore
+                // For example: document.getElementById('user-headline').textContent = userData.headline;
+
+            } else {
+                console.log("No such document in Firestore!");
+            }
+        } else {
+            // User is signed out.
+            // Redirect them to the login page
+            console.log("User is not logged in. Redirecting...");
+            window.location.href = "auth.html";
+        }
+    });
+</script>
 </body>
 </html>

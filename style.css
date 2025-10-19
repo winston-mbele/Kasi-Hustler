@@ -165,6 +165,52 @@ img {
     padding: 8px;
 }
 
+.social-auth {
+    margin-bottom: 20px;
+}
+
+.btn-google {
+    background-color: #fff;
+    color: #444;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-google:hover {
+    background-color: var(--background-color);
+}
+
+.btn-google img {
+    width: 18px;
+    height: 18px;
+}
+
+.divider {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
 .hamburger { display: none; cursor: pointer; }
 .hamburger span {
     display: block;
@@ -320,6 +366,28 @@ section { padding: 60px 0; }
 .btn-profile { background-color: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); }
 .btn-contact:hover { background-color: var(--primary-hover); }
 .btn-profile:hover { background-color: var(--background-color); }
+
+/* --- Back Button --- */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    margin-bottom: 25px; /* Adds space between button and profile header */
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.btn-back:hover {
+    background-color: var(--background-color);
+    border-color: var(--secondary-color);
+}
 
 /* --- How It Works --- */
 .how-it-works { background-color: var(--surface-color); }
