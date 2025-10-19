@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script type="module">
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+        import { auth } from './firebase-config.js';
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // If user is already logged in, redirect them away from the auth page.
+                window.location.href = 'myprofile.html';
+            }
+        });
+    </script>
 </head>
 <body class="auth-body">
 
@@ -70,13 +81,10 @@
     </div>
 
     <script type="module">
-    // Import what you need from the SDKs
     import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
     import { setDoc, doc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-    // Import auth and db from your config file
     import { auth, db } from './firebase-config.js';
 
-    // --- Form Switching Logic (No changes here) ---
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
     const showLoginBtn = document.getElementById('show-login');
@@ -103,7 +111,6 @@
     showSignupBtn.addEventListener('click', showSignup);
     switchToSignupLink.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
 
-    // --- Google Sign-In Logic ---
     const googleSignInBtn = document.getElementById('google-signin-btn');
     googleSignInBtn.addEventListener('click', async () => {
         const provider = new GoogleAuthProvider();
@@ -111,21 +118,25 @@
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
 
-            // Save or update user data in Firestore
             await setDoc(doc(db, "users", user.uid), {
                 fullName: user.displayName,
-                email: user.email
-                // You can add more fields here, like photoURL: user.photoURL
-            }, { merge: true }); // merge:true prevents overwriting existing data
+                email: user.email,
+            }, { merge: true }); 
+            
+            // If Google provides a photo, save it to local storage.
+            if(user.photoURL) {
+                // Fetching the image and converting to Base64 can be complex here.
+                // For simplicity, we'll let the profile page handle the default.
+                // A more advanced solution would fetch and convert here.
+            }
 
-            window.location.href = "myprofile.html"; // Redirect on success
+            window.location.href = "myprofile.html";
         } catch (error) {
             console.error("Error during Google sign-in:", error);
             alert(`Google Sign-In Error: ${error.message}`);
         }
     });
 
-    // --- Firebase Signup Logic ---
     const signupFormElement = signupForm.querySelector('form');
     signupFormElement.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -155,7 +166,6 @@
         }
     });
 
-    // --- Firebase Login Logic ---
     const loginFormElement = loginForm.querySelector('form');
     loginFormElement.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -173,3 +183,4 @@
     </script>
 </body>
 </html>
+

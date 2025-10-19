@@ -128,11 +128,8 @@ function initSearchFunctionality() {
       const name = card.querySelector('.provider-info h3')?.textContent.toLowerCase() || '';
       const service = card.querySelector('.provider-service')?.textContent.toLowerCase() || '';
       const locationTxt = card.querySelector('.provider-location')?.textContent.toLowerCase() || '';
-      const tags = Array.from(card.querySelectorAll('.skill-tag'))
-        .map((el) => el.textContent.toLowerCase())
-        .join(' ');
-
-      const termMatch = !term || [name, service, tags].some((v) => v.includes(term));
+      
+      const termMatch = !term || [name, service].some((v) => v.includes(term));
       const locMatch = !loc || locationTxt.includes(loc);
       const show = termMatch && locMatch;
       card.style.display = show ? '' : 'none';
@@ -219,11 +216,101 @@ function initMobileMenu() {
   }
 }
 
+// 6) Theme Toggle
+function initThemeToggle() {
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        // Apply saved theme on page load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            let theme = 'light';
+            if (document.body.classList.contains('dark-mode')) {
+                theme = 'dark';
+                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+            localStorage.setItem('theme', theme);
+        });
+    }
+}
+
+// 7) Language Switcher to prompt browser translation
+function initLanguageSwitcher() {
+    const langButton = document.querySelector('.language-btn');
+    const langDropdown = document.querySelector('.language-dropdown');
+    const chevronIcon = langButton?.querySelector('.chevron-icon');
+    const currentLangSpan = document.getElementById('current-lang');
+    const langOptions = document.querySelectorAll('.language-option');
+
+    if (!langButton || !langDropdown) return;
+
+    // Toggle dropdown
+    langButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        langDropdown.classList.toggle('active');
+        chevronIcon?.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', () => {
+        langDropdown.classList.remove('active');
+        chevronIcon?.classList.remove('active');
+    });
+
+    // Handle language selection
+    langOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const langCode = this.dataset.lang;
+            const langShort = this.textContent.match(/\(([^)]+)\)/)[1];
+
+            // Set the lang attribute on the HTML tag. This signals to the browser
+            // that the page content is in a different language, which should 
+            // trigger the browser's built-in translation prompt.
+            document.documentElement.lang = langCode;
+            
+            // Update button text and save preference for consistent UI
+            if (currentLangSpan) currentLangSpan.textContent = langShort;
+            localStorage.setItem('preferredLanguage', langCode);
+            localStorage.setItem('preferredLanguageShort', langShort);
+
+            // Close dropdown
+            langDropdown.classList.remove('active');
+            chevronIcon?.classList.remove('active');
+            
+            console.log(`Page language set to '${langCode}'. Your browser should now offer to translate if your browser's language is different.`);
+        });
+    });
+
+    // On page load, apply the saved language preference to the HTML tag and button
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+        document.documentElement.lang = savedLang;
+        const savedLangShort = localStorage.getItem('preferredLanguageShort');
+        if (savedLangShort && currentLangSpan) {
+            currentLangSpan.textContent = savedLangShort;
+        }
+    } else {
+        // Ensure default is set if no preference is saved
+        document.documentElement.lang = 'en';
+    }
+}
+
+
 // Init all once DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  initMobileMenu();
-  initNavbar();
-  initScrollAnimations();
-  initSearchFunctionality();
-  initLazyLoading();
+    initMobileMenu();
+    initNavbar();
+    initScrollAnimations();
+    initSearchFunctionality();
+    initLazyLoading();
+    initThemeToggle();
+    initLanguageSwitcher();
 });
+

@@ -7,6 +7,197 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- Chat Page Styles --- */
+        .chat-page-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-color);
+            z-index: 2000;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .chat-page-container.active {
+            display: flex;
+            transform: translateX(0);
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .chat-back-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .chat-provider-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .chat-provider-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-provider-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chat-provider-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.online { background-color: #2ecc71; } /* Green */
+        .status-indicator.idle { background-color: #f39c12; } /* Orange */
+        .status-indicator.offline { background-color: #95a5a6; } /* Grey */
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 75%;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message p {
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .message p.has-image {
+            padding: 5px;
+            background-color: transparent !important;
+            border: none !important;
+        }
+        .message .chat-image {
+            max-width: 100%;
+            border-radius: 15px;
+            display: block;
+            max-height: 200px;
+        }
+        .message-time {
+             font-size: 0.75rem;
+             color: var(--text-light);
+             margin-top: 5px;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+        .message.sent p:not(.has-image) {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+        .message.received p {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 5px;
+        }
+
+
+        .chat-input-area {
+            display: flex;
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            gap: 10px;
+            align-items: center;
+        }
+
+        #chat-message-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+        }
+        #chat-message-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .chat-action-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #chat-upload-btn {
+            background-color: var(--surface-color);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        #chat-upload-btn:hover {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+        }
+        
+        #chat-send-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        #chat-send-btn:hover {
+            background-color: var(--primary-hover);
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -20,21 +211,10 @@
                 <a href="#services" class="nav-link">Services</a>
                 <a href="#stories" class="nav-link">Stories</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                <a href="auth.html" class="nav-link btn-auth">Sign Up / Login</a>
-            
-                <div class="language-switcher">
-                    <button class="language-btn">
-                        <i class="fas fa-globe"></i>
-                        <span>EN</span>
-                        <i class="fas fa-chevron-down chevron-icon"></i>
-                    </button>
-                    <div class="language-dropdown">
-                        <a href="#" class="language-option">English (EN)</a>
-                        <a href="#" class="language-option">isiZulu (ZU)</a>
-                        <a href="#" class="language-option">Sesotho (ST)</a>
-                        <a href="#" class="language-option">Afrikaans (AF)</a>
-                    </div>
+                <div id="auth-container">
+                    <a href="auth.html" class="nav-link btn-auth">Sign Up / Login</a>
                 </div>
+                 <button class="btn-theme theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
             </div>
             <div class="hamburger">
                 <span></span>
@@ -88,9 +268,9 @@
                 <p>Meet some of our top-rated professionals making a difference.</p>
             </div>
             <div class="providers-grid">
-                <div class="provider-card">
+                <div class="provider-card" data-status="online">
                     <div class="provider-image">
-                        <img class="provider-photo" src="austine.jpg" loading="lazy" alt="Thabo Mthembu profile photo">
+                        <img class="provider-photo" src="austine.jpg" loading="lazy" alt="Austine Mongwe profile photo">
                         <div class="verified-badge"><i class="fas fa-check"></i> Verified</div>
                     </div>
                     <div class="provider-info">
@@ -104,14 +284,14 @@
                             <span class="rating-text">4.9 (127 reviews)</span>
                         </div>
                         <div class="provider-actions">
-                            <a href="chat.html" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
+                            <a href="#" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
                             <a href="provider-profile.html" class="btn-profile">View Profile</a>
                         </div>
                     </div>
                 </div>
-                <div class="provider-card">
+                <div class="provider-card" data-status="idle">
                     <div class="provider-image">
-                        <img class="provider-photo" src="ole.jpg" loading="lazy" alt="Nomsa Dlamini profile photo">
+                        <img class="provider-photo" src="ole.jpg" loading="lazy" alt="Olerato Monye profile photo">
                          <div class="verified-badge"><i class="fas fa-check"></i> Verified</div>
                     </div>
                     <div class="provider-info">
@@ -125,14 +305,14 @@
                             <span class="rating-text">5.0 (89 reviews)</span>
                         </div>
                         <div class="provider-actions">
-                            <a href="chat.html" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
+                            <a href="#" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
                             <a href="provider2-profile.html" class="btn-profile">View Profile</a>
                         </div>
                     </div>
                 </div>
-                 <div class="provider-card">
+                 <div class="provider-card" data-status="offline">
                     <div class="provider-image">
-                        <img class="provider-photo" src="lethabo.jpg" alt="Sipho Ndlovu profile photo">
+                        <img class="provider-photo" src="lethabo.jpg" alt="Lethabo Phoshoko profile photo">
                          <div class="verified-badge"><i class="fas fa-check"></i> Verified</div>
                     </div>
                     <div class="provider-info">
@@ -146,7 +326,7 @@
                             <span class="rating-text">4.8 (156 reviews)</span>
                         </div>
                         <div class="provider-actions">
-                           <a href="chat.html" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
+                           <a href="#" class="btn-contact"><i class="fas fa-comment-dots"></i> Message</a>
                             <a href="provider3-profile.html" class="btn-profile">View Profile</a>
                         </div>
                     </div>
@@ -193,17 +373,17 @@
                 <p>Find the right professional for any job, big or small.</p>
             </div>
             <div class="categories-grid">
-                <a href="services.html" class="category-card">
+                <a href="home-services.html" class="category-card">
                     <div class="category-icon"><i class="fas fa-tools"></i></div>
                     <h3>Home Maintenance</h3>
-                    <p>Plumbers, electricians</p>
+                    <p>Plumbers, electricians, gardening</p>
                 </a>
                 <a href="education-services.html" class="category-card">
                     <div class="category-icon"><i class="fas fa-graduation-cap"></i></div>
                     <h3>Education</h3>
                     <p>Tutors, skills training</p>
                 </a>
-                <a href="beauty-and-wellness-services.html" class="category-card">
+                <a href="beauty-wellness-services.html" class="category-card">
                     <div class="category-icon"><i class="fas fa-spa"></i></div>
                     <h3>Beauty & Wellness</h3>
                     <p>Hair, nails, fitness</p>
@@ -212,6 +392,16 @@
                     <div class="category-icon"><i class="fas fa-camera"></i></div>
                     <h3>Events</h3>
                     <p>Photography, catering</p>
+                </a>
+                <a href="car-maintenence-services.html" class="category-card">
+                    <div class="category-icon"><i class="fas fa-car"></i></div>
+                    <h3>Car Maintenance</h3>
+                    <p>Mechanics, car wash</p>
+                </a>
+                 <a href="creative-services.html" class="category-card">
+                    <div class="category-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h3>Creative & Digital</h3>
+                    <p>Printing, drawing/painting</p>
                 </a>
             </div>
         </div>
@@ -287,29 +477,150 @@
         </div>
     </footer>
 
-    <script src="theme.js"></script>
-    <script src="script.js"></script>
-    
-    <script>
-        // Language Switcher Logic
-        document.addEventListener('DOMContentLoaded', function() {
-            const langButton = document.querySelector('.language-btn');
-            const langDropdown = document.querySelector('.language-dropdown');
-            const chevronIcon = document.querySelector('.chevron-icon');
+    <!-- CHAT PAGE STRUCTURE -->
+    <div id="chat-page" class="chat-page-container">
+        <div class="chat-header">
+            <button id="chat-back-btn" class="chat-back-btn"><i class="fas fa-arrow-left"></i></button>
+            <img id="chat-provider-avatar" src="" alt="Provider Avatar" class="chat-provider-avatar">
+            <div class="chat-provider-info">
+                <h3 id="chat-provider-name" class="chat-provider-name"></h3>
+                <div id="chat-provider-status" class="chat-provider-status">
+                    <span class="status-indicator"></span>
+                    <span class="status-text"></span>
+                </div>
+            </div>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+             <!-- Messages will be injected here -->
+             <div class="message received">
+                <p>Hi there! How can I help you today?</p>
+                <span class="message-time">10:30 AM</span>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="file" id="chat-image-input" accept="image/*" style="display: none;">
+            <button id="chat-upload-btn" class="chat-action-btn"><i class="fas fa-paperclip"></i></button>
+            <input type="text" id="chat-message-input" placeholder="Type a message...">
+            <button id="chat-send-btn" class="chat-action-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
-            langButton.addEventListener('click', function(event) {
-                event.stopPropagation();
-                langDropdown.classList.toggle('active');
-                chevronIcon.classList.toggle('active');
+    <script src="script.js"></script>
+    <script type="module" src="auth-status.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Chat Functionality ---
+            const chatPage = document.getElementById('chat-page');
+            const messageButtons = document.querySelectorAll('.btn-contact');
+            const chatBackButton = document.getElementById('chat-back-btn');
+            const chatProviderAvatar = document.getElementById('chat-provider-avatar');
+            const chatProviderName = document.getElementById('chat-provider-name');
+            const chatProviderStatus = document.getElementById('chat-provider-status');
+            const statusIndicator = chatProviderStatus.querySelector('.status-indicator');
+            const statusText = chatProviderStatus.querySelector('.status-text');
+            const chatMessagesContainer = document.getElementById('chat-messages');
+            const chatMessageInput = document.getElementById('chat-message-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            const chatUploadBtn = document.getElementById('chat-upload-btn');
+            const chatImageInput = document.getElementById('chat-image-input');
+            
+            messageButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const card = button.closest('.provider-card');
+                    const providerName = card.querySelector('.provider-info h3').textContent;
+                    const providerAvatarSrc = card.querySelector('.provider-photo').src;
+                    const providerStatus = card.dataset.status;
+
+                    chatProviderName.textContent = providerName;
+                    chatProviderAvatar.src = providerAvatarSrc;
+
+                    // Update Status
+                    statusIndicator.className = 'status-indicator'; // Reset classes
+                    switch (providerStatus) {
+                        case 'online':
+                            statusIndicator.classList.add('online');
+                            statusText.textContent = 'Online';
+                            break;
+                        case 'idle':
+                            statusIndicator.classList.add('idle');
+                            statusText.textContent = 'Away';
+                            break;
+                        case 'offline':
+                            statusIndicator.classList.add('offline');
+                            statusText.textContent = 'Offline';
+                            break;
+                        default:
+                            statusIndicator.classList.add('offline');
+                            statusText.textContent = 'Offline';
+                    }
+
+                    chatPage.classList.add('active');
+                });
             });
 
-            window.addEventListener('click', function(event) {
-                if (!langButton.contains(event.target)) {
-                    langDropdown.classList.remove('active');
-                    chevronIcon.classList.remove('active');
+            function closeChat() {
+                chatPage.classList.remove('active');
+            }
+
+            function sendMessage() {
+                const messageText = chatMessageInput.value.trim();
+                if (messageText === '') return;
+
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'sent');
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                messageElement.innerHTML = `
+                    <p>${messageText}</p>
+                    <span class="message-time">${time}</span>
+                `;
+
+                chatMessagesContainer.appendChild(messageElement);
+                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+                chatMessageInput.value = '';
+                chatMessageInput.focus();
+            }
+
+            function sendImage(imageSrc) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'sent');
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                messageElement.innerHTML = `
+                    <p class="has-image">
+                        <img src="${imageSrc}" alt="Uploaded Image" class="chat-image">
+                    </p>
+                    <span class="message-time">${time}</span>
+                `;
+                chatMessagesContainer.appendChild(messageElement);
+                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+            }
+
+            chatBackButton.addEventListener('click', closeChat);
+            chatSendBtn.addEventListener('click', sendMessage);
+            chatMessageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            
+            chatUploadBtn.addEventListener('click', () => {
+                chatImageInput.click();
+            });
+
+            chatImageInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        sendImage(event.target.result);
+                    };
+                    reader.readAsDataURL(file);
                 }
+                e.target.value = '';
             });
         });
     </script>
 </body>
 </html>
+

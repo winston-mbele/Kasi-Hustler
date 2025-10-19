@@ -6,14 +6,48 @@
     <title>My Profile</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- Profile Page Specific Header --- */
+        .profile-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .profile-nav .btn-back {
+            margin-bottom: 0; /* Remove margin from the back button when it's in the nav */
+        }
+        
+        .profile-avatar { position: relative; width: fit-content; }
+        .edit-avatar-btn { position: absolute; bottom: 5px; right: 5px; background-color: var(--primary-color, #007bff); color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s; border: 2px solid var(--background-color, #fff); font-size: 0.9rem; }
+        .edit-avatar-btn:hover { background-color: var(--secondary-color, #0056b3); }
+        .document-card { background-color: var(--background-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 25px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; color: var(--text-color); }
+        .document-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .document-icon { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
+        .document-card p { color: var(--text-light); font-size: 0.9rem; }
+        .contact-info-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .contact-details p { margin: 10px 0; }
+        .contact-details i { margin-right: 10px; color: var(--primary-color); }
+        .social-links a { font-size: 1.8rem; margin: 0 10px; color: var(--secondary-color); }
+        .social-links a:hover { color: var(--primary-color); }
+        .map-container { position: relative; overflow: hidden; width: 100%; padding-top: 56.25%; border-radius: var(--border-radius); margin-top: 15px; }
+        .map-container iframe { position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; border: none; }
+    </style>
 </head>
 <body class="profile-page">
 
     <div class="container">
+        
+        <div class="profile-nav">
+             <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <!-- Theme Toggle Button -->
+            <button class="btn-theme theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+        </div>
 
-        <a href="index.html" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Back to Home
-        </a>
 
         <div class="profile-header">
             <div class="profile-avatar">
@@ -24,7 +58,7 @@
                 <input type="file" id="imageUpload" accept="image/*" style="display:none;">
             </div>
             <div class="profile-info">
-                <h1 id="user-name">Justin Mthombeni</h1>
+                <h1 id="user-name">Loading...</h1>
                 <p id="user-headline" class="text-light">Creative Web Developer & UI/UX Enthusiast</p>
             </div>
         </div>
@@ -73,7 +107,6 @@
                     <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
                     <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    
                 </div>
             </div>
         </div>
@@ -82,156 +115,72 @@
             <h2><i class="fas fa-map-marker-alt"></i> Location</h2>
             <p class="text-light">Based in Tshwane, South Africa</p>
             <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.125979529324!2d28.21017427593282!3d-25.76632404505341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956208557b5465%3A0x8da324483758a523!2sUnion%20Buildings!5e0!3m2!1sen!2sza!4v1727037380961!5m2!1sen!2sza" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!m12!1m3!1d3593.125979529324!2d28.21017427593282!3d-25.76632404505341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956208557b5465%3A0x8da324483758a523!2sUnion%20Buildings!5e0!3m2!1sen!2sza!4v1727037380961!5m2!1sen!2sza" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
         
     </div>
 
-    <style>
-        /* Added styles for the profile avatar and edit button */
-        .profile-avatar {
-            position: relative;
-            width: fit-content; /* Ensures the container wraps the image */
-        }
-        .edit-avatar-btn {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background-color: var(--primary-color, #007bff); /* Fallback color */
-            color: white;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border: 2px solid var(--background-color, #fff); /* Fallback color */
-            font-size: 0.9rem;
-        }
-        .edit-avatar-btn:hover {
-            background-color: var(--secondary-color, #0056b3); /* Fallback color */
-        }
-
-        .document-card {
-            background-color: var(--background-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            color: var(--text-color);
-        }
-        .document-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-        .document-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        .document-card p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        .contact-info-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .contact-details p {
-            margin: 10px 0;
-        }
-        .contact-details i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
-        .social-links a {
-            font-size: 1.8rem;
-            margin: 0 10px;
-            color: var(--secondary-color);
-        }
-        .social-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .map-container {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            /* 16:9 Aspect Ratio */
-            padding-top: 56.25%; 
-            border-radius: var(--border-radius);
-            margin-top: 15px;
-        }
-        .map-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
-
+    <script src="theme.js"></script>
     <script type="module">
-    // Import what you need from the SDKs
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-    // Import auth and db from your config file
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
     import { auth, db } from './firebase-config.js';
 
-    // --- Image Upload Logic (No changes here) ---
-    document.getElementById('imageUpload').addEventListener('change', function(event) {
-        const profileImage = document.getElementById('profileImage');
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profileImage.src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-    });
+    const profileImage = document.getElementById('profileImage');
+    const imageUploadInput = document.getElementById('imageUpload');
+    let currentUserId = null;
 
-    // --- Firebase: Check Authentication State and Update Profile ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // User is signed in.
-            const uid = user.uid;
-
-            // Get the user's document from Firestore
-            const userDocRef = doc(db, "users", uid);
+            currentUserId = user.uid;
+            
+            const userDocRef = doc(db, "users", currentUserId);
             const userDocSnap = await getDoc(userDocRef);
 
             if (userDocSnap.exists()) {
                 const userData = userDocSnap.data();
-                
-                // Update the DOM with the user's information
-                document.getElementById('user-name').textContent = userData.fullName;
+                document.getElementById('user-name').textContent = userData.fullName || 'User Name';
                 document.querySelector('.contact-details a[href^="mailto:"]').textContent = userData.email;
                 document.querySelector('.contact-details a[href^="mailto:"]').href = `mailto:${userData.email}`;
-                
-                // You can add more fields here if you store them in Firestore
-                // For example: document.getElementById('user-headline').textContent = userData.headline;
-
             } else {
-                console.log("No such document in Firestore!");
+                console.log("No such user document in Firestore!");
             }
+            
+            const localImage = localStorage.getItem(`userProfileImage_${currentUserId}`);
+            if (localImage) {
+                profileImage.src = localImage;
+            } else {
+                profileImage.src = 'default-profile-picture.png';
+            }
+
         } else {
-            // User is signed out.
-            // Redirect them to the login page
-            console.log("User is not logged in. Redirecting...");
             window.location.href = "auth.html";
         }
     });
-</script>
+
+    imageUploadInput.addEventListener('change', function(event) {
+        if (!currentUserId) return;
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Image = e.target.result;
+                profileImage.src = base64Image;
+                
+                try {
+                    localStorage.setItem(`userProfileImage_${currentUserId}`, base64Image);
+                    console.log("Profile picture saved locally!");
+                } catch (error) {
+                    console.error("Error saving image to localStorage:", error);
+                    alert("Could not save image. The file might be too large.");
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    </script>
 </body>
 </html>
+
